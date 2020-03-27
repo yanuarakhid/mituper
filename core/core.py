@@ -13,13 +13,18 @@ def menu():
             '''
             ------------ CONFIGURATION MENU -----------
 
-            [1] Check Internet Connection (ping google.com)
-            [2] Ping to other
-            [3] Set IP Address
-            [4] Reboot The Router
-            [5] Shutdown The Router
+            [1] Automaticaly Configure Network 
+            [2] Set IP Address
+            [3] Enable Web Proxy
+            [4] Check Internet Connection (ping google.com)
+            [5] Ping to other Host
             [6] System Resource
-            [7] Exit Program
+            [7] Change Password
+            [8] Set Identity Router
+            [9] Reset Configuration
+            [10] Reboot The Router
+            [11] Shutdown The Router
+            [12] Exit Program
 
             -------------------------------------------
             '''
@@ -28,13 +33,10 @@ def menu():
         choice = input("Input The number Coice : ")
         choice = int(choice)
         if choice == 1:
-            check_connection()
+            os.system("clear")
+            automatic()
             menu = input() or "menu"
         elif choice == 2:
-            ping = input("Ping To : ")
-            pingOther(ping)
-            menu = input() or "menu"
-        elif choice == 3:
             os.system("clear")
             print('''
 By Default We Set
@@ -55,17 +57,34 @@ You Can Set To Other IP Address, Prefix, Interface, or Comment
             set_comment = input("Input your interface : ") or "MY LAN NETWORK"
             set_ip(set_ip_address, set_prefix, set_interface, set_comment)
             menu = input() or "menu"
+        elif choice == 3:
+            print("fitur belum ada")
         elif choice == 4:
+            check_connection()
+            menu = input() or "menu"
+        elif choice == 5:
             ping = input("Ping To : ")
             pingOther(ping)
             menu = input() or "menu"
-        elif choice == 5:
-            shutdown()
-            exit()
         elif choice == 6:
             resource()
             menu = input() or "menu"
         elif choice == 7:
+            print("fitur belum ada")
+            menu = input() or "menu"
+        elif choice == 8:
+            print("fitur belum ada")
+            menu = input() or "menu"
+        elif choice == 9:
+            print("fitur belum ada")
+            menu = input() or "menu"
+        elif choice == 10:
+            print("fitur belum ada")
+            menu = input() or "menu"
+        elif choice == 11:
+            shutdown()
+            exit()
+        elif choice == 12:
             exit()
         else:
             print("Wrong Choice, Please Choice 1, 2, 3")
@@ -168,7 +187,7 @@ def show_interface():
     ssh_connect.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh_connect.connect(hostname=host, username=username,
                         password=passwd, port=port, timeout=5)
-    stdin, stdout, stderr = ssh_connect.exec_command('ip address print')
+    stdin, stdout, stderr = ssh_connect.exec_command('interface print')
     time.sleep(1)
 
     output = stdout.readlines()
@@ -190,3 +209,33 @@ def set_ip(ip, prefix, interface, comment):
     print("\n".join(output))
     ssh_connect.close()
     show_interface()
+
+
+def automatic():
+    print('''
+By Default We Set
+
+1. DHCP Client For Your WAN in ether1
+  (Please Plug Your Source Internet (WAN) in ether 1
+2. And For Your LAN Address 
+    IP Address  : 10.100.88.1
+    Prefix      : /24
+    Interface   : ether2
+    Comment     : MY LAN NETWORK
+3. Set DHCP Server for Your LAN Network
+4. And Include Set The NAT (Network Address)
+
+Dont Worry You Can Also set Manualy :)
+            ''')
+    ether_wan = input(
+        "Where You Plug Internet Cable (as Your WAN) ex. ether1 : ")
+    dhcp_or_static = input("Set Your WAN with DHCP Client or Static ? Y/n")
+    if dhcp_or_static == 'Y' or 'y':
+        print("hehehe")
+    elif dhcp_or_static == 'N' or 'n':
+        print("hiya")
+    else:
+        print("hiya salah")
+    ether_lan = input("Input Your Ether for LAN ex.ether2 : ")
+    lan = input("Input Your LAN Network Address ex.10.100.1.1 : ")
+    prefix = input("Input your lan Address Prefix ex. 24 : ")
