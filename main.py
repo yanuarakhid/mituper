@@ -26,7 +26,7 @@ def main():
     ''')
     input("Press Enter To Begin")
     time.sleep(1)
-    core.login()
+    core.go()
 
 
 if __name__ == "__main__":

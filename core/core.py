@@ -1,11 +1,29 @@
 import os
+from selectmenu import SelectMenu
 import paramiko
 import time
 import socket
 from getpass import getpass
 
 
-def menu():
+def go():
+    os.system("clear")
+    menu = SelectMenu()
+    menu.add_choices(["Manual Configuration", "Automaticaly Configuration Using YAML (One Router)",
+                      "Automaticaly Configuration Using YAML (2 or More Router )", "Exit"])
+    result = menu.select(
+        "========= SELECT THE CONFIGURATION DO YOU WANT ========")
+    if result == "Manual Configuration":
+        menu_manual()
+    elif result == "Automaticaly Configuration Using YAML (One Router)":
+        exit()
+    elif result == "Automaticaly Configuration Using YAML (2 or More Router )":
+        exit()
+    elif result == "Exit":
+        exit()
+
+
+def menu_manual():
     menu = "menu"
     while menu == "menu":
         os.system("clear")
