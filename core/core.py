@@ -1,70 +1,82 @@
 import os
-from selectmenu import SelectMenu
 import paramiko
 import time
 import socket
+from selectmenu import SelectMenu
 from getpass import getpass
+
+host = "10.100.1.1"
+username = "admin"
+passwd = ""
+port = "22"
 
 
 def go():
-    os.system("clear")
-    menu = SelectMenu()
-    menu.add_choices(["Manual Configuration", "Automaticaly Configuration Using YAML (One Router)",
-                      "Automaticaly Configuration Using YAML (2 or More Router )", "Exit"])
-    result = menu.select(
-        "========= SELECT THE CONFIGURATION DO YOU WANT ========")
-    if result == "Manual Configuration":
-        menu_manual()
-    elif result == "Automaticaly Configuration Using YAML (One Router)":
-        exit()
-    elif result == "Automaticaly Configuration Using YAML (2 or More Router )":
-        exit()
-    elif result == "Exit":
-        exit()
+    back = "menu"
+    while back == "menu":
+        os.system("clear")
+        print('''
+        ========= SELECT THE CONFIGURATION MODE DO YOU WANT ========
+
+            [1] Manual Configuration
+            [2] Automaticaly Configuration Using YAML (One Router)
+            [3] Automaticaly Configuration Using YAML (2 or More Router )
+            [4] Exit
+            
+        =============================================================
+        ''')
+        select = int(input("Mituper >> ")or 5)
+        if select == 1:
+            menu_manual()
+        elif select == 2:
+            exit()
+        elif select == 3:
+            exit()
+        elif select == 4:
+            exit()
+        elif select == 5:
+            go()
+        else:
+            back = input("Wrong Choice, Please Choice 1, 2, 3") and "menu"
+            go()
 
 
 def menu_manual():
     menu = "menu"
     while menu == "menu":
         os.system("clear")
-        print(
-            '''
-            ------------ CONFIGURATION MENU -----------
-
-            [1] Automaticaly Configure Network 
-            [2] Set IP Address
-            [3] Enable Web Proxy
-            [4] Check Internet Connection (ping google.com)
-            [5] Ping to other Host
-            [6] System Resource
-            [7] Change Password
-            [8] Set Identity Router
-            [9] Reset Configuration
-            [10] Reboot The Router
-            [11] Shutdown The Router
-            [12] Exit Program
-
-            -------------------------------------------
-            '''
-        )
-
-        choice = input("Input The number Coice : ")
-        choice = int(choice)
+        print('''
+        ========= SELECT THE CONFIGURATION DO YOU WANT ========
+    
+        [1] Set IP Address
+        [2] Enable Web Proxy
+        [3] Check Internet Connection (ping google.com)
+        [4] Ping to other Host
+        [5] System Resource
+        [6] Change Password
+        [7] Set Identity Router
+        [8] Reset Configuration
+        [9] Reboot The Router
+        [10] Shutdown The Router
+        [11] Back
+        [12] Exit                     
+        
+        ========================================================
+        ''')
+        choice = int(input("Mituper >> ")or 99)
         if choice == 1:
             os.system("clear")
-            automatic()
-            menu = input() or "menu"
-        elif choice == 2:
-            os.system("clear")
             print('''
-By Default We Set
+        ========================================================    
+        By Default We Set
 
-IP Address  : 10.100.88.1
-Prefix      : /24
-Interface   : ether2
-Comment     : MY LAN NETWORK
+        IP Address  : 10.100.88.1
+        Prefix      : /24
+        Interface   : ether2
+        Comment     : MY LAN NETWORK
 
-You Can Set To Other IP Address, Prefix, Interface, or Comment
+        You Can Set To Other IP Address, Prefix, Interface, or Comment
+        ======================================================== 
             ''')
             input("Enter to Show Interface/IP Address and Continue")
             time.sleep(1)
@@ -75,17 +87,20 @@ You Can Set To Other IP Address, Prefix, Interface, or Comment
             set_comment = input("Input your interface : ") or "MY LAN NETWORK"
             set_ip(set_ip_address, set_prefix, set_interface, set_comment)
             menu = input() or "menu"
-        elif choice == 3:
+        elif choice == 2:
             print("fitur belum ada")
-        elif choice == 4:
+        elif choice == 3:
             check_connection()
             menu = input() or "menu"
-        elif choice == 5:
+        elif choice == 4:
             ping = input("Ping To : ")
             pingOther(ping)
             menu = input() or "menu"
-        elif choice == 6:
+        elif choice == 5:
             resource()
+            menu = input() or "menu"
+        elif choice == 6:
+            print("fitur belum ada")
             menu = input() or "menu"
         elif choice == 7:
             print("fitur belum ada")
@@ -97,22 +112,17 @@ You Can Set To Other IP Address, Prefix, Interface, or Comment
             print("fitur belum ada")
             menu = input() or "menu"
         elif choice == 10:
-            print("fitur belum ada")
-            menu = input() or "menu"
-        elif choice == 11:
             shutdown()
             exit()
+        elif choice == 11:
+            go()
         elif choice == 12:
             exit()
+        elif choice == 99:
+            menu_manual()
         else:
-            print("Wrong Choice, Please Choice 1, 2, 3")
-            menu = input() or "menu"
-
-
-host = "10.100.1.1"
-username = "admin"
-passwd = ""
-port = "22"
+            menu = input("Wrong Choice, Please Choice 1, 2, 3") and "menu"
+            menu_manual()
 
 
 def login():
@@ -138,7 +148,7 @@ def login():
                             password=passwd, port=port, timeout=5)
         print("\u001b[32m Connected successfully. \u001b[37m")
         ssh_connect.close()
-        menu()
+        menu_manual()
     except paramiko.SSHException:
         print("\u001b[31m Incorrect password \u001b[37m")
     except paramiko.ssh_exception.NoValidConnectionsError:
