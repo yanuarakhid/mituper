@@ -1,0 +1,2 @@
+def multi():
+    print("multi")

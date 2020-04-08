@@ -2,43 +2,13 @@ import os
 import paramiko
 import time
 import socket
-from selectmenu import SelectMenu
+from main import main
 from getpass import getpass
 
 host = "10.100.1.1"
 username = "admin"
 passwd = ""
 port = "22"
-
-
-def go():
-    back = "menu"
-    while back == "menu":
-        os.system("clear")
-        print('''
-        ========= SELECT THE CONFIGURATION MODE DO YOU WANT ========
-
-            [1] Manual Configuration
-            [2] Automaticaly Configuration Using YAML (One Router)
-            [3] Automaticaly Configuration Using YAML (2 or More Router )
-            [4] Exit
-            
-        =============================================================
-        ''')
-        select = int(input("Mituper >> ")or 5)
-        if select == 1:
-            menu_manual()
-        elif select == 2:
-            exit()
-        elif select == 3:
-            exit()
-        elif select == 4:
-            exit()
-        elif select == 5:
-            go()
-        else:
-            back = input("Wrong Choice, Please Choice 1, 2, 3") and "menu"
-            go()
 
 
 def menu_manual():
@@ -115,7 +85,7 @@ def menu_manual():
             shutdown()
             exit()
         elif choice == 11:
-            go()
+            main.go()
         elif choice == 12:
             exit()
         elif choice == 99:
@@ -151,10 +121,13 @@ def login():
         menu_manual()
     except paramiko.SSHException:
         print("\u001b[31m Incorrect password \u001b[37m")
+        exit()
     except paramiko.ssh_exception.NoValidConnectionsError:
         print("\u001b[31m Unable Connect to Host \u001b[37m")
+        exit()
     except socket.timeout:
         print("\u001b[31m Unable to Connect \u001b[37m")
+        exit()
 
 
 def check_connection():
@@ -238,32 +211,3 @@ def set_ip(ip, prefix, interface, comment):
     ssh_connect.close()
     show_interface()
 
-
-def automatic():
-    print('''
-By Default We Set
-
-1. DHCP Client For Your WAN in ether1
-  (Please Plug Your Source Internet (WAN) in ether 1
-2. And For Your LAN Address 
-    IP Address  : 10.100.88.1
-    Prefix      : /24
-    Interface   : ether2
-    Comment     : MY LAN NETWORK
-3. Set DHCP Server for Your LAN Network
-4. And Include Set The NAT (Network Address)
-
-Dont Worry You Can Also set Manualy :)
-            ''')
-    ether_wan = input(
-        "Where You Plug Internet Cable (as Your WAN) ex. ether1 : ")
-    dhcp_or_static = input("Set Your WAN with DHCP Client or Static ? Y/n")
-    if dhcp_or_static == 'Y' or 'y':
-        print("hehehe")
-    elif dhcp_or_static == 'N' or 'n':
-        print("hiya")
-    else:
-        print("hiya salah")
-    ether_lan = input("Input Your Ether for LAN ex.ether2 : ")
-    lan = input("Input Your LAN Network Address ex.10.100.1.1 : ")
-    prefix = input("Input your lan Address Prefix ex. 24 : ")

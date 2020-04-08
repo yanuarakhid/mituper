@@ -1,7 +1,39 @@
 #!/usr/bin/python
-from core import core
+from manual import manual
+from multirouter import multirouter
+from singlerouter import singlerouter
 import os
 import time
+
+
+def go():
+    back = "menu"
+    while back == "menu":
+        os.system("clear")
+        print('''
+        ========= SELECT THE CONFIGURATION MODE DO YOU WANT ========
+
+            [1] Manual Configuration
+            [2] Automaticaly Configuration Using YAML (One Router)
+            [3] Automaticaly Configuration Using YAML (2 or More Router )
+            [4] Exit
+            
+        =============================================================
+        ''')
+        select = int(input("Mituper >> ")or 5)
+        if select == 1:
+            manual.menu_manual()
+        elif select == 2:
+            exit()
+        elif select == 3:
+            exit()
+        elif select == 4:
+            exit()
+        elif select == 5:
+            go()
+        else:
+            back = input("Wrong Choice, Please Choice 1, 2, 3") and "menu"
+            go()
 
 
 def main():
@@ -26,7 +58,7 @@ def main():
     ''')
     input("Press Enter To Begin")
     time.sleep(1)
-    core.go()
+    go()
 
 
 if __name__ == "__main__":
