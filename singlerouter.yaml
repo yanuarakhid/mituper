@@ -1,0 +1,12 @@
+ip: 10.100.69.7
+username: "admin"
+password: "qwe321"
+ssh_port: "22"
+interface:
+  - int: "ether2"
+    ip_address: "10.100.88.1/24"
+    comment: "TO LAN1"
+  - int: "ether3"
+    ip_address: "172.168.88.1/24"
+    comment: "TO LAN2"
+# gateway: 10.100.69.1

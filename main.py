@@ -22,9 +22,9 @@ def go():
         ''')
         select = int(input("Mituper >> ")or 5)
         if select == 1:
-            manual.menu_manual()
+            manual.login()
         elif select == 2:
-            exit()
+            singlerouter.go()
         elif select == 3:
             exit()
         elif select == 4:

@@ -2,7 +2,6 @@ import os
 import paramiko
 import time
 import socket
-from main import main
 from getpass import getpass
 
 host = "10.100.1.1"
@@ -210,4 +209,3 @@ def set_ip(ip, prefix, interface, comment):
     print("\n".join(output))
     ssh_connect.close()
     show_interface()
-
