@@ -4,9 +4,9 @@ import time
 import socket
 from getpass import getpass
 
-host = "10.100.1.1"
+host = "10.100.69.4"
 username = "admin"
-passwd = ""
+passwd = "qwe321"
 port = "22"
 
 
@@ -27,7 +27,7 @@ def menu_manual():
         [8] Reset Configuration
         [9] Reboot The Router
         [10] Shutdown The Router
-        [11] Back
+        [11] LogOut and Configure Other Router
         [12] Exit                     
         
         ========================================================
@@ -35,6 +35,7 @@ def menu_manual():
         choice = int(input("Mituper >> ")or 99)
         if choice == 1:
             os.system("clear")
+            show_interface()
             print('''
         ========================================================    
         By Default We Set
@@ -72,19 +73,22 @@ def menu_manual():
             print("fitur belum ada")
             menu = input() or "menu"
         elif choice == 7:
-            print("fitur belum ada")
+            get_identity()
+            name = input("Set Identity Name : ")
+            set_identity(name)
+            get_identity()
             menu = input() or "menu"
         elif choice == 8:
             print("fitur belum ada")
             menu = input() or "menu"
         elif choice == 9:
-            print("fitur belum ada")
-            menu = input() or "menu"
+            reboot()
+            exit()
         elif choice == 10:
             shutdown()
             exit()
         elif choice == 11:
-            main.go()
+            login()
         elif choice == 12:
             exit()
         elif choice == 99:
@@ -106,7 +110,7 @@ def login():
     ''')
     global host, username, passwd, port
     host = input(
-        "Router Address (Ex:example.com/192.168.88.1) : ") or "10.100.69.17"
+        "Router Address (Ex:example.com/192.168.88.1) : ") or "10.100.69.4"
     username = input("Username  : ") or "admin"
     passwd = getpass("Password: ") or "qwe321"
     port = input("SSH Port : ") or 22
@@ -167,6 +171,16 @@ def shutdown():
     time.sleep(1)
 
 
+def reboot():
+    global host, username, passwd, port
+    ssh_connect = paramiko.SSHClient()
+    ssh_connect.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh_connect.connect(hostname=host, username=username,
+                        password=passwd, port=port, timeout=5)
+    stdin, stdout, stderr = ssh_connect.exec_command('system reboot;')
+    time.sleep(1)
+
+
 def resource():
     global host, username, passwd, port
     ssh_connect = paramiko.SSHClient()
@@ -209,3 +223,32 @@ def set_ip(ip, prefix, interface, comment):
     print("\n".join(output))
     ssh_connect.close()
     show_interface()
+
+
+def get_identity():
+    global host, username, passwd, port
+    ssh_connect = paramiko.SSHClient()
+    ssh_connect.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh_connect.connect(hostname=host, username=username,
+                        password=passwd, port=port, timeout=5)
+    stdin, stdout, stderr = ssh_connect.exec_command('system identity print')
+    time.sleep(1)
+
+    output = stdout.readlines()
+    print("\n".join(output))
+    ssh_connect.close()
+
+
+def set_identity(name):
+    global host, username, passwd, port
+    ssh_connect = paramiko.SSHClient()
+    ssh_connect.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    ssh_connect.connect(hostname=host, username=username,
+                        password=passwd, port=port, timeout=5)
+    stdin, stdout, stderr = ssh_connect.exec_command(
+        'system identity set name='+name)
+    time.sleep(1)
+
+    output = stdout.readlines()
+    print("\n".join(output))
+    ssh_connect.close()
