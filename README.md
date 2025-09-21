@@ -9,4 +9,4 @@
             "MIkrotik-seTUp-helPER"
 ```
 
-The Application is not maintained again :)
+The Application isn't maintained again :)
